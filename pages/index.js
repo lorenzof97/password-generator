@@ -33,7 +33,7 @@ export default function Home() {
   function handleCopy() {
     if (password != "") {
       const element = document.createElement("textarea");
-      element.value = password.join("");
+      element.value = password;
       document.body.appendChild(element);
       element.select();
       document.execCommand("copy");
@@ -77,7 +77,7 @@ export default function Home() {
         <h1 className="text-center text-5xl p-10">Password Generator</h1>
         <div className="bg-[#18171F] border-2 border-[#00FFFF] flex flex-row mx-[auto] items-center p-3 rounded-3xl">
           <h2 className="text-[32px]">{password}</h2>
-          <h3 className="absolute text-center text-lg pl-[300px] bg-[#979797] color-[#00FFFF]">{text}</h3>
+          <h3 className="absolute text-center text-lg pl-[300px] bg-transparent color-[#00FFFF]">{text}</h3>
           <svg
             onClick={handleCopy}
             onMouseDown={() => setCopyPress(true)}
