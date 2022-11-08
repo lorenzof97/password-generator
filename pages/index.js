@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+ 
 
 export default function Home() {
   const [input, setInput] = useState(10);
@@ -13,21 +14,14 @@ export default function Home() {
   const [isNumber, setIsNumber] = useState(0);
   const [isSpecial, setIsSpecial] = useState(0);
   const [password, setPassword] = useState("");
-  const [hover, setHover] = useState(false);
+  const [generateHover, setGenerateHover] = useState(false);
   const [buttonPress, setButtonPress] = useState(false);
   const [copyPress, setCopyPress] = useState(false);
-  const [empty, setEmpty] = useState(true);
+  const [copyHover, setCopyHover] = useState(false);
+  const [copy, setCopy] = useState(false);
   const tempPassword = [];
   let params = lowercase + uppercase + number + special;
   const strength = isLowercase + isUppercase + isNumber + isSpecial;
-
-  {
-    /* 
-    const [warning, setWarning] = useState("");
-    const [sliderPress, setSliderPress] = useState(false);
-    const [checkPress, setCheckPress] = useState(false);
-  */
-  }
 
   useEffect(() => {
     if (submit) {
@@ -45,7 +39,8 @@ export default function Home() {
   }, [submit]);
 
   function handleCopy() {
-    if (password != "") {
+    if (password != "") {    
+      setCopy(true);
       const element = document.createElement("textarea");
       element.value = password;
       document.body.appendChild(element);
@@ -53,6 +48,10 @@ export default function Home() {
       document.execCommand("copy");
       document.body.removeChild(element);
       setText("Copied!");
+      {/* setting text to fade after a second */}
+      setTimeout(() => {
+        setCopy(false)
+      }, 1000);
     }
   }
 
@@ -86,44 +85,45 @@ export default function Home() {
 
   return (
     <>
-      <div className="pt-[5.5vh] w-[540px] h-[80px]">
+      <div className=" ">
         <h1 className="text-center text-5xl p-10">Password Generator</h1>
+        <div className="w-full h-6"/>
         <div className="bg-[#18171F] flex flex-row items-center p-3">
-          <h2 className="text-[32px]">{password}</h2>
-          <h3 className="ml-auto mr-0 text-lg bg-transparent color-[#00FFFF] animate-fade">
-            {text}
+          <h2 className="ml-5 text-2xl">{password}</h2>
+          <h3 className={`${!copy ? "opacity-0" : "opacity-100"} ml-auto mr-0 text-lg text-yellow-200 bg-transparent color-[#00FFFF] transition-all`}>
+            Copied! 
           </h3>
           <svg
             onClick={handleCopy}
             onMouseDown={() => setCopyPress(true)}
             onMouseUp={() => setCopyPress(false)}
-            className={`${
-              copyPress ? "#fef08a" : "fill-white"
-            } ml-[auto] mr-5 cursor-pointer `}
+            onMouseEnter={() => setCopyHover(true)}
+            onMouseLeave={() => setCopyHover(false)}
+            className={`${copyPress ? "scale-90" : ""} ml-[auto] mr-5 cursor-pointer transition-all`}
             xmlns="http://www.w3.org/2000/svg"
             height="48"
             width="48"
           >
-            <path d="M39 40H13q-1.2 0-2.1-.9-.9-.9-.9-2.1V5q0-1.2.9-2.1.9-.9 2.1-.9h17.4L42 13.6V37q0 1.2-.9 2.1-.9.9-2.1.9ZM28.9 14.9V5H13v32h26V14.9ZM7 46q-1.2 0-2.1-.9Q4 44.2 4 43V12.05h3V43h24.9v3Zm6-41v9.9V5v32V5Z" />
+            <path fill = {`${copyHover ? "#fef08a" : "white"}`} d="M39 40H13q-1.2 0-2.1-.9-.9-.9-.9-2.1V5q0-1.2.9-2.1.9-.9 2.1-.9h17.4L42 13.6V37q0 1.2-.9 2.1-.9.9-2.1.9ZM28.9 14.9V5H13v32h26V14.9ZM7 46q-1.2 0-2.1-.9Q4 44.2 4 43V12.05h3V43h24.9v3Zm6-41v9.9V5v32V5Z" />
           </svg>
         </div>
-        <div className="w-full h-[30px] " />
+        <div className="w-full h-6"/>
 
         {/* below controls "main" box of the generator */}
 
-        <div className="  p-10 text-lg rounded-3xl">
-          <div className="flex flex-row text-xl pb-4 items-center">
+        <div className="p-10 text-lg rounded-3xl">
+          <div className="flex flex-row text-2xl pb-4 items-center">
             Character Length
             <p onChange={handleChange} className="ml-[auto] mr-0 text-4xl">
               {input}
             </p>
           </div>
           <input
-            className="w-full my-6"
+            className="w-full my-6 bg-yellow-200  rounded-full cursor-pointer appearance-none range-sm [::-webkit-slider-thumb]"
             type="range"
             id="slider"
             min={8}
-            max={20}
+            max={25}
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -161,12 +161,15 @@ export default function Home() {
               <label htmlFor="symbols">Include Symbols</label>
             </li>
           </ul>
+
+          {/* controls strength range bar */}
+
           <div className="flex flex-row w-[460px] h-[80px] bg-zinc-700 items-center text-3xl mt-6">
             STRENGTH:
             <label
               className={`${
                 strength == 0
-                  ? "bg-zinc-700 ml-6 mb-0 mt-auto"
+                  ? "bg-zinc-700 ml-6"
                   : strength == 1
                   ? "bg-red-500 w-[13.75%] rounded-r-none"
                   : strength == 2
@@ -174,7 +177,7 @@ export default function Home() {
                   : strength == 3
                   ? "bg-lime-200 w-[41.25%] rounded-r-none"
                   : "bg-green-400 w-[55%] rounded-r-full"
-              } text-[#E6E5EA] ml-12 my-[5%] h-3/4 rounded-l-full transition-all`}
+              } text-[#E6E5EA] ml-12 h-1/2 rounded-l-full transition-all `}
               htmlFor="strengthTest"
             >
               <p className={`${strength == 0 ? "" : "hidden"} w-[250px]`}>
@@ -182,10 +185,13 @@ export default function Home() {
               </p>
             </label>
           </div>
+
+          {/* button that handles password generation */}
+
           <button
             onClick={() => setSubmit(true)}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={() => setGenerateHover(true)}
+            onMouseLeave={() => setGenerateHover(false)}
             onMouseDown={() => setButtonPress(true)}
             onMouseUp={() => setButtonPress(false)}
             className={`${
@@ -196,7 +202,7 @@ export default function Home() {
           >
             GENERATE{" "}
             <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48">
-              <path className = "transition-all" fill={`${hover ? "#3f3f46" : "#fef08a"}`} d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z" />             
+              <path className = "transition-all" fill={`${generateHover ? "#3f3f46" : "#fef08a"}`} d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z" />             
             </svg>
           </button>
         </div>
