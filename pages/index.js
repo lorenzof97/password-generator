@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 export default function Home() {
   const [input, setInput] = useState(10);
   const [submit, setSubmit] = useState(false);
+  const [saveSubmit, setSaveSubmit] = useState(false);
   const [text, setText] = useState("");
   const [lowercase, setLowercase] = useState("");
   const [uppercase, setUppercase] = useState("");
@@ -42,6 +43,19 @@ export default function Home() {
       setSubmit(false);
     }
   }, [submit]);
+
+  useEffect(() => {
+    if (saveSubmit) {
+      var saveName = `${fileName}.txt`
+      var hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:attachment/text,' + encodeURI(password);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = saveName;
+      hiddenElement.click();
+    }
+    setSaveSubmit(false);
+  }, [saveSubmit]);
+  
 
   function handleCopy() {
     if (password != "") {
@@ -91,7 +105,7 @@ export default function Home() {
   }
 
   function handleFileNameChange(e) {
-    setFileName(e.target.input);
+    setFileName(e.target.value);
   }
 
   function fileValidator(e) {
@@ -102,16 +116,8 @@ export default function Home() {
   function handleSubmit(e) {
     e.preventDefault();
     if (!fileValidator(fileName)) {
-      {
-        /* logic to send to file */
-      }
+      setSaveSubmit(true);
     }
-  }
-
-  {
-    /* try {
-    var isFileSaverSupported = !!new Blob;
-} catch (e) {} */
   }
 
   return (
@@ -152,8 +158,8 @@ export default function Home() {
             onClick={() => setSaveModule(!saveModule)}
             onMouseEnter={() => setSaveHover(true)}
             onMouseLeave={() => setSaveHover(false)}
-            className={`${saveModule ? "italic text-yellow-200" : ""} ${
-              saveHover ? "text-yellow-200" : ""
+            className={`${saveModule ? "text-black bg-yellow-200" : ""} ${
+              saveHover ? "text-black bg-yellow-200" : ""
             } text-lg mt-3 ml-auto mr-0 bg-[#18171F] px-4 py-2 rounded transition-all`}
           >
             Save As...
@@ -279,7 +285,7 @@ export default function Home() {
         <p className="text-md mt-0.5 mb-0.5 mx-1 italic">Enter filename...</p>
         <div className="flex flex-row">
           <input
-            id="filename"
+            id="fileName"
             type="text"
             value={fileName}
             onChange={handleFileNameChange}
@@ -290,6 +296,7 @@ export default function Home() {
         </div>
         <button
           type="submit"
+          onClick={() => setSaveModule(false)}
           className="mt-0 mb-1 mx-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
         >
           Save
