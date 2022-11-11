@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { saveAs } from "file-saver";
 
 export default function Home() {
   const [input, setInput] = useState(10);
@@ -24,6 +23,7 @@ export default function Home() {
   const [saveModule, setSaveModule] = useState(false);
   const [saveHover, setSaveHover] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [error, setError] = useState(false);
   const tempPassword = [];
 
   let params = lowercase + uppercase + number + special;
@@ -108,6 +108,8 @@ export default function Home() {
     setFileName(e.target.value);
   }
 
+  {/* below validator is pretty simple and not universal though "safe", checks for alphanumerics and hyphen*/}
+
   function fileValidator(e) {
     var validChars = new RegExp("/[a-z0-9]|[-]/gi");
     return !!validChars.test(e);
@@ -117,6 +119,8 @@ export default function Home() {
     e.preventDefault();
     if (!fileValidator(fileName)) {
       setSaveSubmit(true);
+    } else {
+      setError(true);
     }
   }
 
@@ -276,32 +280,42 @@ export default function Home() {
 
         {/* "saveModule" and "expanded", while representing the same state, need to handle setTimeout differently to make display: hidden or "hidden" work */}
       </div>
-      <form
-        onSubmit={handleSubmit}
-        className={`${
-          !saveModule ? "opacity-0" : "opacity-100"
-        } absolute flex flex-col border-2 w-48 h-32 mt-[-34.5%] ml-[29.5%] p-0.5 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100`}
-      >
-        <p className="text-md mt-0.5 mb-0.5 mx-1 italic">Enter filename...</p>
-        <div className="flex flex-row">
-          <input
-            id="fileName"
-            type="text"
-            value={fileName}
-            onChange={handleFileNameChange}
-            className="w-full h-4/5 bg-zinc-700 text-yellow-200 mt-0 mb-0.5 mx-1 rounded"
-          />
-
-          {/* elected to go for p tag over label tag as label padding was difficult to work with (wanted the ".txt" extension on screen closer to the input field whereas the "label" element always added extra static padding) */}
-        </div>
-        <button
-          type="submit"
-          onClick={() => setSaveModule(false)}
-          className="mt-0 mb-1 mx-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
+      <div>
+        <form
+          onSubmit={handleSubmit}
+          className={`${
+            !saveModule ? "opacity-0" : "opacity-100"
+          } absolute flex flex-col border-2 w-48 h-32 mt-[-34.5%] ml-[29.5%] p-0.5 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100`}
         >
-          Save
-        </button>
-      </form>
+          <p className="text-md mt-0.5 mb-0.5 mx-1 italic">Enter filename...</p>
+          <div className="flex flex-row">
+            <input
+              id="fileName"
+              type="text"
+              value={fileName}
+              onChange={handleFileNameChange}
+              className="w-full h-4/5 bg-zinc-700 text-yellow-200 mt-0 mb-0.5 mx-1 rounded"
+            />
+
+            {/* elected to go for p tag over label tag as label padding was difficult to work with (wanted the ".txt" extension on screen closer to the input field whereas the "label" element always added extra static padding) */}
+          
+          </div>
+          <button
+            type="submit"
+            onClick={() => setSaveModule(false)}
+            className="mt-0 mb-1 mx-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
+          >
+            Save
+          </button>
+        </form>
+        {error ? (
+            <p className="absolute h-8 mt-[-32.7%] ml-[40%] p-0.5 text-xl rounded italic transition-all text-red-500 delay-100">
+              Please enter a valid filename
+            </p>
+          ) : (
+            ""
+          )}
+      </div>
     </>
   );
 }
