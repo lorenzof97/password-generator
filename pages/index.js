@@ -28,6 +28,8 @@ export default function Home() {
 
   let params = lowercase + uppercase + number + special;
   const strength = isLowercase + isUppercase + isNumber + isSpecial;
+  
+  /* generates password given a length, running a loop for each character slot, returns error if not set */
 
   useEffect(() => {
     if (submit) {
@@ -43,6 +45,8 @@ export default function Home() {
       setSubmit(false);
     }
   }, [submit]);
+  
+  /* handles password file save */
 
   useEffect(() => {
     if (saveSubmit) {
@@ -114,6 +118,8 @@ export default function Home() {
     var validChars = new RegExp("/[a-z0-9]|[-]/gi");
     return !!validChars.test(e);
   }
+  
+  /* validates name for file name compabitibility */
 
   function handleSubmit(e) {
     e.preventDefault();
