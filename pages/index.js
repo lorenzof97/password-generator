@@ -49,16 +49,16 @@ export default function Home() {
 
   useEffect(() => {
     if (saveSubmit) {
-      var saveName = `${fileName}.txt`
-      var hiddenElement = document.createElement('a');
-      hiddenElement.href = 'data:attachment/text,' + encodeURI(password);
-      hiddenElement.target = '_blank';
+      var saveName = `${fileName}.txt`;
+      var hiddenElement = document.createElement("a");
+      hiddenElement.href = "data:attachment/text," + encodeURI(password);
+      hiddenElement.target = "_blank";
       hiddenElement.download = saveName;
       hiddenElement.click();
     }
     setSaveSubmit(false);
   }, [saveSubmit]);
-  
+
   function handleCopy() {
     if (password != "") {
       setCopy(true);
@@ -103,7 +103,9 @@ export default function Home() {
   function handleFileNameChange(e) {
     setFileName(e.target.value);
   }
-  {/* below validator is pretty simple and not universal though "safe", checks for alphanumerics and hyphen*/}
+  {
+    /* below validator is pretty simple and not universal though "safe", checks for alphanumerics and hyphen*/
+  }
   function fileValidator(e) {
     var validChars = new RegExp("/[a-z0-9]|[-]/gi");
     return !!validChars.test(e);
@@ -121,10 +123,12 @@ export default function Home() {
   }
   return (
     <>
-      <div className="flex flex-row">
+      <div className="flex flex-row ">
         <div className="flex flex-col transition-all">
-          <h1 className="text-center text-5xl p-10">Password Generator</h1>
-          <div className="w-full h-6" />
+          <h1 className="text-center text-5xl font-playfair p-10">
+            Password Generator
+          </h1>
+          <div className="w-full h-6 border-t" />
           <div className="bg-[#18171F] flex flex-row items-center p-3">
             <h2 className="ml-5 text-2xl">{password}</h2>
             <h3
@@ -153,19 +157,50 @@ export default function Home() {
               />
             </svg>
           </div>
-          <button
-            onClick={() => setSaveModule(!saveModule)}
-            onMouseEnter={() => setSaveHover(true)}
-            onMouseLeave={() => setSaveHover(false)}
-            className={`${saveModule ? "text-black bg-yellow-200" : ""} ${
-              saveHover ? "text-black bg-yellow-200" : ""
-            } text-lg mt-3 ml-auto mr-0 bg-[#18171F] px-4 py-2 rounded transition-all`}
-          >
-            Save As...
-          </button>
+
+          <div className="flex flex-row items-center">
+            <p className="absolute mt-3 mx-4 p-1 italic text-yellow-200">
+              Enter Filename...
+            </p>
+            <form
+              className={`${
+                !saveModule ? "hidden opacity-0" : "sm:opacity-100"
+              } mt-3  mx-4  absolute flex flex-row border-2 ml-40 items-center justify-end w-64 h-12 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100`}
+            >
+              <div className="flex flex-row">
+            <input
+              id="fileName"
+              type="text"
+              value={fileName}
+              onChange={handleFileNameChange}
+              className="w-full h-4/5 bg-zinc-700 text-yellow-200 my-0.5 mb-0.5 mx-1 rounded"
+            />
+            {/* elected to go for p tag over label tag as label padding was difficult to work with (wanted the ".txt" extension on screen closer to the input field whereas the "label" element always added extra static padding) */}
+            </div>
+             <button
+                type="submit"
+                onClick={() => setSaveModule(false)}
+                className="mt-0 mx-0 p-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
+              >
+                Save
+              </button>
+            </form>
+
+            <button
+              onClick={() => setSaveModule(!saveModule)}
+              onMouseEnter={() => setSaveHover(true)}
+              onMouseLeave={() => setSaveHover(false)}
+              className={`${saveModule ? "text-black bg-yellow-200" : ""} ${
+                saveHover ? "text-black bg-yellow-200" : ""
+              } text-lg mt-3 ml-auto mr-0 sm:my-4 bg-[#18171F] px-4 py-2 rounded transition-all`}
+            >
+              Save As...
+            </button>
+          </div>
           <div className="w-full h-2" />
           {/* below controls "main" box of the generator */}
           <div className="px-12 py-6 text-lg rounded-3xl">
+            <div className="w-full h-6 border-t" />
             <div className="flex flex-row text-2xl pb-4 items-center">
               Character Length
               <p
@@ -241,6 +276,7 @@ export default function Home() {
               </label>
             </div>
             {/* button that handles password generation */}
+            <div className="w-full h-6 border-b" />
             <button
               onClick={() => setSubmit(true)}
               onMouseEnter={() => setGenerateHover(true)}
@@ -271,7 +307,7 @@ export default function Home() {
         <form
           onSubmit={handleSubmit}
           className={`${
-            !saveModule ? "opacity-0" : "opacity-100"
+            !saveModule ? "sm:hidden sm:opacity-0" : "opacity-100"
           } absolute flex flex-col border-2 w-48 h-32 mt-[-34.5%] ml-[29.5%] p-0.5 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100`}
         >
           <p className="text-md mt-0.5 mb-0.5 mx-1 italic">Enter filename...</p>
@@ -284,7 +320,6 @@ export default function Home() {
               className="w-full h-4/5 bg-zinc-700 text-yellow-200 mt-0 mb-0.5 mx-1 rounded"
             />
             {/* elected to go for p tag over label tag as label padding was difficult to work with (wanted the ".txt" extension on screen closer to the input field whereas the "label" element always added extra static padding) */}
-          
           </div>
           <button
             type="submit"
@@ -295,12 +330,12 @@ export default function Home() {
           </button>
         </form>
         {error ? (
-            <p className="absolute h-8 mt-[-32.7%] ml-[40%] p-0.5 text-xl rounded italic transition-all text-red-500 delay-100">
-              Please enter a valid filename
-            </p>
-          ) : (
-            ""
-          )}
+          <p className="absolute h-8 mt-[-32.7%] ml-[40%] p-0.5 text-xl rounded italic transition-all text-red-500 delay-100">
+            Please enter a valid filename
+          </p>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );
