@@ -159,32 +159,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-row items-center">
-            <p className="absolute mt-3 mx-4 p-1 italic text-yellow-200">
-              Enter Filename...
-            </p>
-            <form
-              className={`${
-                !saveModule ? "hidden opacity-0" : "sm:opacity-100"
-              } mt-3  mx-4  absolute flex flex-row border-2 ml-40 items-center justify-end w-64 h-12 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100`}
-            >
-              <div className="flex flex-row">
-            <input
-              id="fileName"
-              type="text"
-              value={fileName}
-              onChange={handleFileNameChange}
-              className="w-full h-4/5 bg-zinc-700 text-yellow-200 my-0.5 mb-0.5 mx-1 rounded"
-            />
-            {/* elected to go for p tag over label tag as label padding was difficult to work with (wanted the ".txt" extension on screen closer to the input field whereas the "label" element always added extra static padding) */}
-            </div>
-             <button
-                type="submit"
-                onClick={() => setSaveModule(false)}
-                className="mt-0 mx-0 p-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
-              >
-                Save
-              </button>
-            </form>
+            
 
             <button
               onClick={() => setSaveModule(!saveModule)}
@@ -307,24 +282,24 @@ export default function Home() {
         <form
           onSubmit={handleSubmit}
           className={`${
-            !saveModule ? "sm:hidden sm:opacity-0" : "opacity-100"
-          } absolute flex flex-col border-2 w-48 h-32 mt-[-34.5%] ml-[29.5%] p-0.5 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100`}
+            !saveModule ? "opacity-0" : "opacity-100"
+          } absolute flex flex-col border-2 w-48 h-32 mt-[-700px] sm:mt-[-684px] ml-[570px] p-0.5 rounded bg-yellow-200 border-none text-xl text-zinc-700 transition-all delay-100 sm:border-2  sm:flex-row sm:w-96 sm:h-12 sm:ml-[50px] sm:items-center sm:justify-end`}
         >
-          <p className="text-md mt-0.5 mb-0.5 mx-1 italic">Enter filename...</p>
+          <p className="text-xl ml-1 mr-12 italic whitespace-nowrap">Enter name...</p>
           <div className="flex flex-row">
             <input
               id="fileName"
               type="text"
               value={fileName}
               onChange={handleFileNameChange}
-              className="w-full h-4/5 bg-zinc-700 text-yellow-200 mt-0 mb-0.5 mx-1 rounded"
+              className="w-full h-4/5 bg-zinc-700 text-yellow-200 m-1 rounded"
             />
             {/* elected to go for p tag over label tag as label padding was difficult to work with (wanted the ".txt" extension on screen closer to the input field whereas the "label" element always added extra static padding) */}
           </div>
           <button
             type="submit"
             onClick={() => setSaveModule(false)}
-            className="mt-0 mb-1 mx-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
+            className="my-2 mx-1 sm:mx-0 sm:p-1 border rounded h-full hover:text-yellow-200 hover:bg-zinc-700 transition-all"
           >
             Save
           </button>
